@@ -79,3 +79,17 @@ All three badge-style dropdowns now offer **Box**, **Bar**, **None**, **Standard
 **Text Auto** shows the category name without a box or bar, tinted toward its category color. To improve readability across light and dark Discourse palettes, the color is blended with the active palette's `--primary-high` foreground via CSS `color-mix()` (42% category color, 58% foreground). Older browsers fall back to `--primary-high`. This is a practical contrast-biased blend, **not a mathematical WCAG contrast guarantee** for every possible background. It does not change Discourse category colors or the other five modes.
 
 Suggested settings: main categories **Box**, subcategories **Text Auto**, topic lists **Bar**. Test both light and dark themes after upgrading.
+
+
+## aForum EVO v1.0.7 — Subcategory Standard fix
+
+Fixes the `subcategory_badge_style: standard` option when the main category
+style is `box`: subcategory chips in the category overview were inadvertently
+matched by the main-category CSS selector because they don't reliably have the
+`--has-parent` marker. The main selector now excludes `.subcategories`,
+`.subcategory` and `.subcategories-list` descendants. `standard` leaves
+Discourse's native colored-square badge intact. All other settings are kept.
+
+Suggested verification: Main = Box, Subcategory = Standard, Topic List = Bar.
+Reload the category overview, check a child category such as “Aprilia News”,
+and verify that the native square marker appears rather than a filled box.

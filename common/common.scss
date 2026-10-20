@@ -144,10 +144,22 @@
 
 // Category overview: main categories and subcategories can be styled separately.
 // Discourse marks nested categories with --has-parent on the badge element.
-.category-list .badge-category__wrapper:not(:has(.badge-category.--has-parent)) {
+// EVO 1.0.7: exclude chips nested in the subcategory list from the MAIN
+// selector. Child chips often lack --has-parent, so the old :not(:has())
+// selector also matched them and painted them as main-category boxes.
+// This is why "Subcategory = Standard" still looked like Box when Main = Box.
+.category-list .badge-category__wrapper:not(:where(
+  .subcategories .badge-category__wrapper,
+  .subcategory .badge-category__wrapper,
+  .subcategories-list .badge-category__wrapper
+)):not(:has(.badge-category.--has-parent)) {
   @include evo-badge-style($main-category-badge-style);
 }
-.category-list .badge-category__wrapper:has(.badge-category.--has-parent) {
+.category-list .badge-category__wrapper:not(:where(
+  .subcategories .badge-category__wrapper,
+  .subcategory .badge-category__wrapper,
+  .subcategories-list .badge-category__wrapper
+)):has(.badge-category.--has-parent) {
   @include evo-badge-style($subcategory-badge-style);
 }
 
