@@ -1,8 +1,9 @@
-// aForum EVO: three independent styles, retaining upstream's Box/Bar/None logic.
+// aForum EVO: three independent styles, now with native Discourse Standard.
 // The general rule handles topic lists (Latest/New/Top) and other badge locations.
 // The category overview overrides it for top-level and child categories.
 
 @mixin evo-badge-style($style) {
+  @if $style != "standard" {
   --badge-category-padding-v: 0.15em;
   --badge-category-padding-h: 0.33em;
 
@@ -80,15 +81,38 @@
     }
   }
 
+  // Text only: keep the category label, but color it using Discourse's
+  // own per-category CSS variable. Do not draw a square, bar or box.
+  @if $style == "text" {
+    .badge-category {
+      background: transparent;
+      padding: 0;
+      color: var(--category-badge-color, var(--primary-high));
+
+      &__name { color: var(--category-badge-color, var(--primary-high)) !important; }
+      .d-icon { color: currentColor; }
+
+      &.--style-square::before,
+      &.--style-icon::before,
+      &.--style-emoji::before { display: none; content: none; }
+    }
+  }
+
   @if $style == "none" {
     &::before { display: none; }
     .badge-category.--style-icon .d-icon,
     .badge-category.--style-emoji .emoji { display: none; }
   }
+  }
 }
 
 // General badge appearance, including the right-hand Latest column.
-.badge-category__wrapper {
+.badge-category__wrapper:not(:where(
+  .category-list .badge-category__wrapper,
+  .subcategories .badge-category__wrapper,
+  .subcategory .badge-category__wrapper,
+  .subcategories-list .badge-category__wrapper
+)) {
   @include evo-badge-style($topic-list-badge-style);
 }
 
@@ -193,6 +217,27 @@
       width: 0.33em !important;
       align-self: stretch !important;
       background: var(--category-badge-color) !important;
+    }
+  }
+}
+
+// EVO 1.0.5: robust text-only option for subcategory chips.
+@if $subcategory-badge-style == "text" {
+  .category-list .subcategories .badge-category__wrapper > .badge-category,
+  .subcategories .badge-category__wrapper > .badge-category,
+  .subcategory .badge-category__wrapper > .badge-category,
+  .subcategories-list .badge-category__wrapper > .badge-category {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: var(--category-badge-color, var(--primary-high)) !important;
+
+    &::before, &::after { display: none !important; content: none !important; }
+    .badge-category__name {
+      color: var(--category-badge-color, var(--primary-high)) !important;
     }
   }
 }

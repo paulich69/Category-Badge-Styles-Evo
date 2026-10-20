@@ -33,3 +33,41 @@ Fix: Subcategory badge selectors no longer depend on a `.category-list` ancestor
 ### EVO v1.0.3
 
 Fixes subcategory styling by targeting the actual `span.badge-category` element inside `.subcategories`, as confirmed using browser developer tools. For `None`, explicitly removes the colored background, padding and pseudo-element decorations. Also applies direct Box/Bar overrides. Main categories and topic-list settings remain independent.
+
+## aForum EVO v1.0.4
+
+Each of the three settings (`main_category_badge_style`,
+`subcategory_badge_style`, `topic_list_badge_style`) now supports four options:
+
+- `box`: colored badge background
+- `bar`: slim category-color bar
+- `none`: plain label without badge decoration
+- `standard`: **native Discourse category badge**, including the colored
+  square/marker before the label
+
+`standard` is different from `none`: it leaves Discourse's built-in badge
+styling in place. Category overview and subcategory selectors are isolated
+from the topic-list style so a setting for one area does not override another.
+
+Recommended aForum settings: main = `box`, subcategories = `standard`,
+topic lists = `bar`.
+
+Upgrade: replace the previous EVO component; keep the original upstream
+Category Badge Styles component disabled to prevent CSS conflicts.
+
+## aForum EVO v1.0.5
+
+All three dropdowns now offer **five choices**:
+
+- `box`: colored background
+- `bar`: slim colored bar
+- `none`: plain text in the normal interface color
+- `standard`: native Discourse category badge, with the colored square in front
+- `text`: **category-colored text**, without a colored box, bar or square
+
+The `text` color is sourced from `--category-badge-color`, so it follows the
+category's color as configured in Discourse. The existing defaults remain
+main = box, subcategories = none, topic lists = bar.
+
+After installing, refresh the browser (Ctrl+F5) and configure each dropdown.
+Do not enable the original Category Badge Styles component at the same time.

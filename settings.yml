@@ -5,6 +5,8 @@ main_category_badge_style:
     - box
     - bar
     - none
+    - standard
+    - text
 subcategory_badge_style:
   type: enum
   default: none
@@ -12,6 +14,8 @@ subcategory_badge_style:
     - box
     - bar
     - none
+    - standard
+    - text
 topic_list_badge_style:
   type: enum
   default: bar
@@ -19,3 +23,5 @@ topic_list_badge_style:
     - box
     - bar
     - none
+    - standard
+    - text
