@@ -7,6 +7,7 @@ main_category_badge_style:
     - none
     - standard
     - text
+    - text-auto
 subcategory_badge_style:
   type: enum
   default: none
@@ -16,6 +17,7 @@ subcategory_badge_style:
     - none
     - standard
     - text
+    - text-auto
 topic_list_badge_style:
   type: enum
   default: bar
@@ -25,3 +27,4 @@ topic_list_badge_style:
     - none
     - standard
     - text
+    - text-auto

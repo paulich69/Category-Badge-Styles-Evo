@@ -71,3 +71,11 @@ main = box, subcategories = none, topic lists = bar.
 
 After installing, refresh the browser (Ctrl+F5) and configure each dropdown.
 Do not enable the original Category Badge Styles component at the same time.
+
+## aForum EVO v1.0.6 — Text Auto
+
+All three badge-style dropdowns now offer **Box**, **Bar**, **None**, **Standard**, **Text**, and **Text Auto** (`text-auto`).
+
+**Text Auto** shows the category name without a box or bar, tinted toward its category color. To improve readability across light and dark Discourse palettes, the color is blended with the active palette's `--primary-high` foreground via CSS `color-mix()` (42% category color, 58% foreground). Older browsers fall back to `--primary-high`. This is a practical contrast-biased blend, **not a mathematical WCAG contrast guarantee** for every possible background. It does not change Discourse category colors or the other five modes.
+
+Suggested settings: main categories **Box**, subcategories **Text Auto**, topic lists **Bar**. Test both light and dark themes after upgrading.

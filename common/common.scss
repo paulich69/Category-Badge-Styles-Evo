@@ -98,6 +98,32 @@
     }
   }
 
+  // Adaptive text: blend the category hue with Discourse's palette-aware
+  // foreground. This works in both light and dark schemes without hardcoding
+  // either palette's colors. Unlike "text", this is a contrast-biased tint.
+  @if $style == "text-auto" {
+    .badge-category {
+      --evo-text-auto-color: var(--primary-high);
+      color: var(--evo-text-auto-color);
+      background: transparent;
+      padding: 0;
+
+      @supports (color: color-mix(in srgb, red, white)) {
+        --evo-text-auto-color: color-mix(
+          in srgb,
+          var(--category-badge-color) 42%,
+          var(--primary-high) 58%
+        );
+      }
+
+      &__name { color: var(--evo-text-auto-color) !important; }
+      .d-icon { color: currentColor; }
+      &.--style-square::before,
+      &.--style-icon::before,
+      &.--style-emoji::before { display: none; content: none; }
+    }
+  }
+
   @if $style == "none" {
     &::before { display: none; }
     .badge-category.--style-icon .d-icon,
@@ -239,5 +265,33 @@
     .badge-category__name {
       color: var(--category-badge-color, var(--primary-high)) !important;
     }
+  }
+}
+
+// EVO 1.0.6: the category overview renders child badges as separate chips.
+// Override the background on the actual span.badge-category, not just the link.
+@if $subcategory-badge-style == "text-auto" {
+  .category-list .subcategories .badge-category__wrapper > .badge-category,
+  .subcategories .badge-category__wrapper > .badge-category,
+  .subcategory .badge-category__wrapper > .badge-category,
+  .subcategories-list .badge-category__wrapper > .badge-category {
+    --evo-text-auto-color: var(--primary-high);
+    @supports (color: color-mix(in srgb, red, white)) {
+      --evo-text-auto-color: color-mix(
+        in srgb,
+        var(--category-badge-color) 42%,
+        var(--primary-high) 58%
+      );
+    }
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: var(--evo-text-auto-color) !important;
+    &::before, &::after { display: none !important; content: none !important; }
+    .badge-category__name { color: var(--evo-text-auto-color) !important; }
+    .d-icon { color: currentColor !important; }
   }
 }
