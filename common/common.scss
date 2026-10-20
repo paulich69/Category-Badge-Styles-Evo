@@ -105,8 +105,14 @@
 // the main category title. They do not reliably carry --has-parent.
 // Target their actual containers, after the main-category rule, so the
 // subcategory setting takes precedence over the generic topic-list style.
-.category-list .subcategories .badge-category__wrapper,
-.category-list .subcategory .badge-category__wrapper {
+// Subcategory badges may be rendered outside .category-list (depending on
+// Discourse's category-list template). Do not require that ancestor.
+// The :not() guard prevents accidentally restyling a main-category badge.
+.subcategories .badge-category__wrapper,
+.subcategory .badge-category__wrapper,
+.subcategories-list .badge-category__wrapper,
+.category-list-item .subcategories .badge-category__wrapper,
+.category-list-item .subcategory .badge-category__wrapper {
   @include evo-badge-style($subcategory-badge-style);
 }
 
@@ -128,5 +134,21 @@
     flex-wrap: wrap;
     gap: 0.25em;
     .subcategory { margin: 0; }
+  }
+}
+
+// Higher-specificity reset for subcategory chips that use a surrounding link.
+@if $subcategory-badge-style == "none" {
+  .subcategories .badge-category__wrapper .badge-category,
+  .subcategory .badge-category__wrapper .badge-category,
+  .subcategories-list .badge-category__wrapper .badge-category {
+    background: transparent;
+    padding: 0;
+    color: var(--primary-high);
+  }
+  .subcategories .badge-category__wrapper .badge-category__name,
+  .subcategory .badge-category__wrapper .badge-category__name,
+  .subcategories-list .badge-category__wrapper .badge-category__name {
+    color: inherit !important;
   }
 }
