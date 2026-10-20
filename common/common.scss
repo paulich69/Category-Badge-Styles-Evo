@@ -101,6 +101,15 @@
   @include evo-badge-style($subcategory-badge-style);
 }
 
+// Subcategory links in the category overview are rendered separately from
+// the main category title. They do not reliably carry --has-parent.
+// Target their actual containers, after the main-category rule, so the
+// subcategory setting takes precedence over the generic topic-list style.
+.category-list .subcategories .badge-category__wrapper,
+.category-list .subcategory .badge-category__wrapper {
+  @include evo-badge-style($subcategory-badge-style);
+}
+
 // Preserve upstream layout refinements where relevant.
 @if $topic-list-badge-style == "box" {
   #reply-control .category-input + .mini-tag-chooser { align-self: stretch; }

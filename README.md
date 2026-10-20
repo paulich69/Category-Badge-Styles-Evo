@@ -21,3 +21,7 @@ CSS-only, uses the modern `:has()` selector and Discourse's `--has-parent` badge
 ## License
 
 Original upstream copyright and Apache-2.0 license are preserved in `LICENSE`.
+
+
+## v1.0.1
+Fixed subcategory badge selection on category overview pages: Discourse renders these badges in `.subcategories` / `.subcategory` containers without reliably marking them `--has-parent`. The subcategory setting now applies to those containers directly.
