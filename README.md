@@ -29,3 +29,7 @@ Fixed subcategory badge selection on category overview pages: Discourse renders 
 ### v1.0.2
 
 Fix: Subcategory badge selectors no longer depend on a `.category-list` ancestor. Added explicit `none` reset for subcategory badge backgrounds.
+
+### EVO v1.0.3
+
+Fixes subcategory styling by targeting the actual `span.badge-category` element inside `.subcategories`, as confirmed using browser developer tools. For `None`, explicitly removes the colored background, padding and pseudo-element decorations. Also applies direct Box/Bar overrides. Main categories and topic-list settings remain independent.
