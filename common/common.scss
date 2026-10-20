@@ -1,0 +1,123 @@
+// aForum EVO: three independent styles, retaining upstream's Box/Bar/None logic.
+// The general rule handles topic lists (Latest/New/Top) and other badge locations.
+// The category overview overrides it for top-level and child categories.
+
+@mixin evo-badge-style($style) {
+  --badge-category-padding-v: 0.15em;
+  --badge-category-padding-h: 0.33em;
+
+  .badge-category {
+    display: flex;
+    gap: var(--badge-category-padding-h);
+    background: transparent;
+    padding: 0;
+    color: var(--primary-high);
+
+    &.--style-square::before,
+    &.--style-icon::before,
+    &.--style-emoji::before {
+      margin-right: 0;
+      height: unset;
+      display: none;
+    }
+
+    .d-icon { margin: 0; color: var(--primary-medium); }
+    &__name { color: inherit !important; }
+  }
+
+  // Undo upstream box/parent stripe and core decoration where necessary.
+  .--style-square.--has-parent {
+    padding-left: 0;
+    &::before { display: none; content: none; }
+  }
+
+  @if $style == "box" {
+    .badge-category {
+      background: var(--category-badge-color);
+      padding: var(--badge-category-padding-v) var(--badge-category-padding-h);
+
+      .d-icon { color: currentcolor; }
+      &__name { color: var(--category-badge-text-color) !important; }
+    }
+
+    .--style-square.--has-parent {
+      padding-left: calc(var(--badge-category-padding-h) * 2);
+      &::before {
+        content: "";
+        display: flex;
+        background: var(--parent-category-badge-color);
+        width: var(--badge-category-padding-h);
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+      }
+    }
+
+    .--style-icon .d-icon,
+    .badge-category__icon { color: var(--category-badge-text-color) !important; }
+  }
+
+  @if $style == "bar" {
+    .badge-category {
+      &.--style-square::before,
+      &.--style-icon::before,
+      &.--style-emoji::before {
+        content: "";
+        display: flex;
+        width: var(--badge-category-padding-h);
+        align-self: stretch;
+        background: var(--category-badge-color);
+      }
+      &.--has-parent.--style-square::before {
+        background: linear-gradient(
+          90deg,
+          var(--parent-category-badge-color) 50%,
+          var(--category-badge-color) 50%
+        );
+        width: calc(var(--badge-category-padding-h) * 2);
+      }
+    }
+  }
+
+  @if $style == "none" {
+    &::before { display: none; }
+    .badge-category.--style-icon .d-icon,
+    .badge-category.--style-emoji .emoji { display: none; }
+  }
+}
+
+// General badge appearance, including the right-hand Latest column.
+.badge-category__wrapper {
+  @include evo-badge-style($topic-list-badge-style);
+}
+
+// Category overview: main categories and subcategories can be styled separately.
+// Discourse marks nested categories with --has-parent on the badge element.
+.category-list .badge-category__wrapper:not(:has(.badge-category.--has-parent)) {
+  @include evo-badge-style($main-category-badge-style);
+}
+.category-list .badge-category__wrapper:has(.badge-category.--has-parent) {
+  @include evo-badge-style($subcategory-badge-style);
+}
+
+// Preserve upstream layout refinements where relevant.
+@if $topic-list-badge-style == "box" {
+  #reply-control .category-input + .mini-tag-chooser { align-self: stretch; }
+  .list-controls .category-breadcrumb .combo-box .combo-box-header {
+    background: var(--category-badge-color);
+    color: var(--category-badge-text-color);
+    border-color: var(--category-badge-color);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .latest-topic-list-item .main-link .bottom-row { align-items: baseline; }
+}
+@if $main-category-badge-style == "box" or $subcategory-badge-style == "box" {
+  .category-list .subcategories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em;
+    .subcategory { margin: 0; }
+  }
+}

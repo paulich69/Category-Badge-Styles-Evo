@@ -1,0 +1,21 @@
+main_category_badge_style:
+  type: enum
+  default: box
+  choices:
+    - box
+    - bar
+    - none
+subcategory_badge_style:
+  type: enum
+  default: none
+  choices:
+    - box
+    - bar
+    - none
+topic_list_badge_style:
+  type: enum
+  default: bar
+  choices:
+    - box
+    - bar
+    - none
